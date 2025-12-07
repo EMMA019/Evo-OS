@@ -1,0 +1,41 @@
+id: "ml_model_api_wrapper"
+name: "Machine Learning Model API Wrapper"
+description: "既存の学習済みモデル（例: scikit-learn, PyTorch）をロードし、REST APIとして公開するAPIキット。"
+version: "1.0.0"
+
+triggers:
+  keywords:
+    - "機械学習"
+    - "AIモデル"
+    - "予測"
+    - "API公開"
+    - "scikit-learn"
+  sample_prompts:
+    - "学習済みモデルをAPIとして公開したい"
+    - "ユーザーの入力から予測結果を返すWebサービスを作って"
+
+blueprint:
+  suggested_tech_stack:
+    - "Python 3.10+ (FastAPI/Flask)"
+    - "Scikit-learn / TensorFlow (Model Library)"
+    - "Numpy (データ処理)"
+    - "FastAPI (API提供。Flaskより高速でモダンなため推奨)"
+
+  core_components:
+    - "Model Loader (pickle, joblib)"
+    - "Data Validator (入力の型チェック)"
+    - "Prediction Endpoint (/predict)"
+
+  expected_file_structure:
+    - "main.py"
+    - "model_wrapper.py"
+    - "model.pkl" # (ダミーファイルとして記載)
+    - "requirements.txt"
+
+resources:
+  domain_knowledge: |
+    【MLモデルAPIのベストプラクティス】
+    1. **Model Loading:** モデルはメインループ外（起動時）に一度だけロードし、メモリにキャッシュすること（推論速度のため）。
+    2. **Input Validation:** APIの入力データは必ずNumpy配列に変換し、形状（shape）をチェックすること。
+    3. **FastAPIの使用:** 予測サービスは低遅延が求められるため、FastAPIの非同期処理を優先すること。
+    4. **セキュリティ:** モデルファイル（.pklなど）は直接アップロードさせず、コードで参照させること。

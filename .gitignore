@@ -1,0 +1,17 @@
+Python
+
+pycache/
+*.py[cod]
+.venv/
+venv/
+env/
+
+Environment Variables
+
+.env
+
+Evo OS Specific
+
+evo_output/
+*.log
+datasets/

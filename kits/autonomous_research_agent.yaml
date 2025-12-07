@@ -1,0 +1,58 @@
+id: "autonomous_research_agent"
+name: "Deep Research Agent (Perplexity Style)"
+description: "Web検索、スクレイピング、要約を自律的に行い、出典付きの調査レポートを作成するエージェント。"
+version: "1.0.0"
+
+triggers:
+  keywords: ["リサーチ", "検索", "調査", "レポート", "Perplexity"]
+  sample_prompts:
+    - "最新のAIトレンドについて調べてレポートにして"
+    - "競合他社の動向を調査するエージェントを作って"
+
+blueprint:
+  suggested_tech_stack:
+    - "Python 3.10+"
+    - "duckduckgo-search (Search Tool)"
+    - "trafilatura (Robust Text Extraction)"
+    - "Gemini 2.5 Flash (Reading & Summarizing)"
+    - "Gemini 2.5 Pro (Final Report Writing)"
+    - "MdUtils (Markdown Generation)"
+
+  core_components:
+    - "Search Engine (Query Handler)"
+    - "Web Scraper (Content Fetcher)"
+    - "Information Synthesizer (LLM)"
+    - "Report Builder"
+    - "Main Controller"
+
+  expected_file_structure:
+    - "main.py"
+    - "search_service.py"
+    - "scrape_service.py"
+    - "synthesis_service.py"
+    - "config.py"
+    - "requirements.txt"
+    - "output_report.md" # 生成される成果物
+
+resources:
+  domain_knowledge: |
+    【開発の鉄則（絶対遵守）】
+    1. **メインファイルの役割放棄 (Strict Rule):**
+       - `main.py` はオーケストレーター（指揮者）に徹すること。
+       - 検索、スクレイピング、要約などの具体的ロジックを `main.py` に書くことは**厳禁**とする。必ず各 `_service.py` をインポートして呼び出せ。
+    
+    2. **スクレイピングの防御力:**
+       - Webサイトはアクセス拒否（403）やタイムアウトが頻発する。
+       - `scrape_service.py` 内では必ず `try-except` でエラーを握り潰し、**「1つのサイトがダメでも止まらずに次へ行く」**構造にせよ。
+       - 取得したテキストは長すぎる場合があるため、先頭 10,000 文字でトリミングする処理を入れること。
+    
+    3. **情報の出典管理:**
+       - 検索結果の URL と タイトル は最後まで保持し、最終レポートの末尾に「参考文献リスト」として記載すること。
+    
+    4. **段階的処理:**
+       - 一気にやろうとしないこと。
+       - Step 1: 検索してURLリストを得る
+       - Step 2: 各URLからテキストを抜く
+       - Step 3: テキストを要約する
+       - Step 4: 要約を統合して執筆する
+       - このフローを `main.py` で順序よく実行せよ。

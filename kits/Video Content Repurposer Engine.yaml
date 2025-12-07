@@ -1,0 +1,50 @@
+id: "video_content_repurposer"
+name: "Video to Blog Engine"
+description: "YouTube動画から音声を抽出し、Gemini 1.5 Flashで文字起こしを行い、ブログ記事とSNS投稿文を自動生成するStreamlitアプリ。"
+version: "1.0.0"
+
+triggers:
+  keywords: ["YouTube", "文字起こし", "要約", "ブログ自動生成", "Streamlit"]
+  sample_prompts:
+    - "YouTube動画をブログ記事にするツールを作って"
+    - "動画のURLから要約とツイートを作るアプリ"
+
+blueprint:
+  suggested_tech_stack:
+    - "Python 3.10+"
+    - "yt-dlp (Video/Audio Downloader)"
+    - "google-generativeai (Gemini 2.5 Flash for Transcription & Writing)"
+    - "Streamlit (Web UI)"
+    - "pydub (Audio Processing)"
+
+  core_components:
+    - "Media Service (Download & Convert)"
+    - "AI Service (Transcribe & Generate)"
+    - "UI Controller (Streamlit View)"
+    - "Main Entry Point"
+
+  expected_file_structure:
+    - "app.py"             # UIのエントリーポイント
+    - "media_service.py"   # ダウンロード・音声変換ロジック
+    - "ai_service.py"      # Gemini APIとの通信ロジック
+    - "utils.py"           # 共通ユーティリティ
+    - "requirements.txt"
+    - "temp/"              # 一時保存フォルダ
+
+resources:
+  domain_knowledge: |
+    【開発の鉄則（絶対厳守）】
+    1. **メインファイルの役割制限 (Strict Rule):**
+       - `app.py` には **UIの表示コード（ボタン、テキストボックスなど）以外を書いてはならない**。
+       - 具体的な処理（ダウンロード、API呼び出し）は、必ず `media_service.py` や `ai_service.py` をインポートして呼び出すこと。
+       - ロジックのベタ書きは「スパゲッティコード」とみなし禁止する。
+    
+    2. **大容量データの処理:**
+       - 動画の音声データは大きいため、一度ローカルの `temp/` フォルダに `.mp3` として保存してからAPIにアップロードする設計にすること。
+       - Gemini 2.5 Flash は音声ファイルを直接扱えるため、Whisperではなく **Gemini APIのFile API** を使用すること（処理が速く簡単）。
+    
+    3. **エラーハンドリング:**
+       - `yt-dlp` はURLが無効だとエラーを吐くため、`try-except` で囲み、ユーザーに分かりやすいエラーメッセージをUIに表示すること。
+    
+    4. **コスト意識:**
+       - 文字起こしや要約には、安価で長文に強い **Gemini 2.5 Flash** モデルを指定すること。

@@ -1,0 +1,46 @@
+id: "web_article_repurposer"
+name: "Web Article to Blog Engine"
+description: "Web記事のURLから本文を抽出し、Gemini 2.5 Flashで要約・再構成して、ブログ記事とSNS投稿文を自動生成するStreamlitアプリ。"
+version: "1.0.0"
+
+triggers:
+  keywords: ["Web要約", "記事要約", "ブログ自動生成", "スクレイピング", "Streamlit"]
+  sample_prompts:
+    - "このニュース記事をブログに書き直して"
+    - "URLから要約とツイートを作るアプリ"
+
+blueprint:
+  suggested_tech_stack:
+    - "Python 3.10+"
+    - "requests (HTTP Client)"
+    - "beautifulsoup4 (HTML Parser)"
+    - "google-generativeai (Gemini 1.5 Flash)"
+    - "Streamlit (Web UI)"
+
+  core_components:
+    - "Scrape Service (Fetch & Parse)"
+    - "AI Service (Summarize & Rewrite)"
+    - "UI Controller (Streamlit View)"
+    - "Main Entry Point"
+
+  expected_file_structure:
+    - "app.py"             # UIのエントリーポイント
+    - "scrape_service.py"  # 記事抽出ロジック
+    - "ai_service.py"      # Gemini APIとの通信ロジック
+    - "utils.py"           # 共通ユーティリティ
+    - "requirements.txt"
+
+resources:
+  domain_knowledge: |
+    【開発の鉄則（絶対厳守）】
+    1. **メインファイルの役割制限 (Strict Rule):**
+       - `app.py` には **UIの表示コード（ボタン、テキストボックスなど）以外を書いてはならない**。
+       - スクレイピングやAI生成の実装は、必ず `scrape_service.py` や `ai_service.py` に記述し、インポートして使用すること。
+       - **`main.py` (app.py) へのロジックベタ書きは厳禁。**
+    
+    2. **スクレイピングの安定性:**
+       - ニュースサイトなどはアクセス制限が厳しい場合があるため、`User-Agent` ヘッダーを適切に設定してリクエストすること。
+       - 本文抽出が難しい場合でもエラーで落ちず、「本文が取得できませんでした」とUIに表示する安全設計にすること。
+    
+    3. **AIモデル:**
+       - 高速かつ安価な **Gemini 2.5 Flash** を使用すること。

@@ -1,0 +1,55 @@
+id: "git_repo_profiler"
+name: "Git Repository AI Profiler"
+description: "Gitリポジトリを解析し、コミット履歴やコード変更量から開発スタイル、貢献パターン、コードの健全性を可視化＆AI診断するダッシュボード。"
+version: "1.0.0"
+
+triggers:
+  keywords: ["Git", "分析", "可視化", "リポジトリ", "プロフィール", "PyDriller"]
+  sample_prompts:
+    - "このGitHubリポジトリの活動履歴を分析してレポートにして"
+    - "開発チームのコードコミット傾向を可視化するツールを作って"
+
+blueprint:
+  suggested_tech_stack:
+    - "Python 3.10+"
+    - "PyDriller (Git Mining)"
+    - "Pandas (Data Analysis)"
+    - "Plotly (Interactive Charts)"
+    - "Streamlit (Dashboard UI)"
+    - "google-generativeai (Gemini 1.5 Flash)"
+
+  core_components:
+    - "Git Miner (Commit History Extractor)"
+    - "Data Analyzer (Statistics & Metrics)"
+    - "AI Profiler (Insights Generation)"
+    - "Dashboard (Visualizations)"
+
+  expected_file_structure:
+    - "app.py"             # Streamlit Entry Point
+    - "miner_service.py"   # PyDriller logic (Repo cloning & mining)
+    - "analysis_service.py"# Pandas logic (Aggregations)
+    - "ai_service.py"      # Gemini logic (Profile generation)
+    - "charts.py"          # Plotly visualization logic
+    - "requirements.txt"
+
+resources:
+  domain_knowledge: |
+    【開発の鉄則】
+    1. **データマイニングの分離とキャッシュ:**
+       - リポジトリ解析は重いため、`miner_service.py` で `pydriller` を実行し、結果（コミット日時、著者、変更行数、ファイル名）を抽出する。
+       - Streamlitの `st.cache_data` を使用して、同じリポジトリの再解析を防ぐこと。
+    
+    2. **「活動ヒートマップ」の実装:**
+       - GitHubの草（Contributions）のようなグラフだけでなく、`Plotly` を使って「曜日 × 時間帯」のヒートマップ（Punch Card）を作成せよ。これにより「深夜稼働率」などを可視化できる。
+    
+    3. **AIによる「開発者性格診断」:**
+       - 集計データ（例: 平均コミットメッセージ長、修正頻度、活動時間帯）をテキスト化してGeminiに渡し、「この開発チームの強みと健康状態」をユーモラスかつ鋭く分析させること。
+    
+    4. **安全なクローン:**
+       - リポジトリは Python の `tempfile` モジュールを使って一時ディレクトリにクローンし、分析後は確実に削除（クリーンアップ）する設計にすること。
+    【厳格な責務分離ルール】
+    
+     app.py:
+       - Streamlit UIのみ（st.title, st.text_input, st.buttonなど）
+       - 他のサービスをインポートして使用
+       - ロジックを書かない

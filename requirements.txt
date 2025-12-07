@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+google-generativeai
+pyyaml
+autopep8
+beautifulsoup4
+requests
+ddgs
+pandas
+plotly
+streamlit

@@ -1,0 +1,60 @@
+id: "chrome_extension_expert"
+name: "Chrome Extension Expert (Manifest V3)"
+description: "ミスを許さない厳格なChrome拡張機能開発キット。HTML/JSの整合性を重視。"
+version: "2.0.0"
+
+triggers:
+  keywords:
+    - "chrome extension"
+    - "クローム拡張"
+    - "プラグイン"
+    - "manifest v3"
+  sample_prompts:
+    - "Chrome拡張機能を作って"
+    - "ブラウザの表示を変える拡張機能"
+
+blueprint:
+  suggested_tech_stack:
+    - "HTML5 / CSS3"
+    - "JavaScript (ES6+)"
+    - "Manifest V3"
+  
+  core_components:
+    - "Popup UI"
+    - "Background Service Worker"
+    - "Content Scripts"
+    - "Message Passing"
+
+  # ★重要: 作成順序を強制する（HTMLが先！）
+  expected_file_structure:
+    - "manifest.json"
+    - "popup/popup.html"  # 先にUIを作る
+    - "popup/popup.js"    # 次にロジック
+    - "popup/popup.css"
+    - "background.js"
+    - "icons/icon16.png" # (ダミー)
+
+resources:
+  domain_knowledge: |
+    【開発の絶対ルール (Strict Rules)】
+    
+    1. **順序の厳守:**
+       - 必ず `popup.html` を作成してから、その後に `popup.js` を実装すること。
+       - AIは「存在しないID」を捏造しがちなので、JSを書く際は直前に作成したHTMLのIDを確認すること。
+
+    2. **IDの整合性チェック (Anti-Hallucination):**
+       - `popup.js` で `document.getElementById('xyz')` を使う場合、そのID `'xyz'` が `popup.html` に実在することを100%保証すること。
+       - もしHTMLにない場合は、JS側で勝手に参照せず、HTML側にIDを追加する修正案を出すこと。
+    
+    2-b. **事前スキャンと自動ID補正 (ID Auto-Sync):**
+       - AIは `popup.js` を生成する前に必ず `popup.html` 内の全ての `id` 属性をスキャンし、参照可能なIDリストを内部に保持すること。
+       - JS側で存在しないIDを参照しようとした場合、勝手にJSに書き込む前に自動で `popup.html` に該当IDを追加する修正案を生成してからJSを作成すること。
+       - このルールに従うことで、HTMLとJS間の整合性を100%自動保証する。
+
+    3. **Manifest V3の罠回避:**
+       - `background` は `scripts` ではなく `"service_worker"` を使うこと。
+       - `browser_action` ではなく `"action"` を使うこと。
+       - `Content Security Policy (CSP)` エラーを防ぐため、インラインスクリプト（HTML内の `<script>...code...</script>`）は禁止。必ず外部ファイル (`popup.js`) に分離すること。
+
+    4. **非同期通信の鉄則:**
+       - `chrome.runtime.onMessage` リスナー内で非同期処理（`sendResponse`）を行う場合は、必ず `return true;` を記述すること。これを忘れるとメッセージチャネルが即座に閉じられる。

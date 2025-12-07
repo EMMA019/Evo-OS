@@ -1,0 +1,59 @@
+id: "data_analysis_dashboard"
+name: "Data Analysis & Visualization Dashboard"
+description: "CSV/Excelデータをアップロードし、自動で集計・可視化を行う分析ダッシュボード"
+version: "1.0.0"
+
+triggers:
+  keywords:
+    - "データ"
+    - "分析"
+    - "グラフ"
+    - "可視化"
+    - "csv"
+    - "dashboard"
+    - "plot"
+  sample_prompts:
+    - "CSVファイルを読み込んでグラフにするアプリを作って"
+    - "売上データを分析するダッシュボードが欲しい"
+    - "データの傾向を可視化するツール"
+
+blueprint:
+  suggested_tech_stack:
+    - "Python 3.10+ (Flask)"
+    - "Pandas (Data Processing)"
+    - "Plotly / Matplotlib (Visualization)"
+    - "Tailwind CSS (UI)"
+    - "Chart.js / Plotly.js (Frontend Rendering)"
+
+  core_components:
+    - "File Uploader (CSV/Excel)"
+    - "Data Processor (Pandas DataFrame)"
+    - "Statistical Analyzer (Mean, Median, Corr)"
+    - "Chart Generator API"
+
+  expected_file_structure:
+    - "app.py"
+    - "analysis_logic.py"
+    - "templates/index.html"
+    - "requirements.txt"
+    - "static/js/dashboard.js"
+
+resources:
+  domain_knowledge: |
+    【データ分析アプリ開発の鉄則】
+    1. **データ処理とWeb表示の分離:**
+       - 重いデータ処理は `analysis_logic.py` 内で行い、`Pandas` をフル活用すること。
+       - `app.py` はデータの受け渡しとAPI提供に徹すること。
+    
+    2. **ファイルアップロード処理:**
+       - ユーザーがCSVファイルをアップロードする機能を必ず実装すること。
+       - アップロードされたファイルは `pd.read_csv()` で読み込み、データフレームとして扱う。
+       - セキュリティのため、ファイル保存時は `werkzeug.utils.secure_filename` を使用するか、一時ファイル (`tempfile`) で処理すること。
+
+    3. **可視化のアプローチ:**
+       - バックエンドでグラフ画像を生成してBase64で返す方法（Matplotlib）か、データをJSONで返してフロントエンドで描画する方法（Chart.js/Plotly.js）のどちらかを選択する。
+       - **推奨:** インタラクティブ性を高めるため、データをJSONで返し、フロントエンド(`Chart.js` または `Plotly.js`)で描画するパターンを優先すること。
+
+    4. **エラーハンドリング:**
+       - 読み込めないフォーマットや、空のデータが送られた場合の例外処理 (`try-except`) を必ず入れること。
+       - 数値データ以外の列が含まれている場合の処理（除外するか、カウントするか）を考慮すること。
