@@ -3,6 +3,7 @@
 🧬 Evo OS
 
 The Agent-First Development Orchestrator
+<img width="1912" height="948" alt="image" src="https://github.com/user-attachments/assets/ffec4744-eb0e-4036-a2e1-6f172adbef3e" />
 
 
 </div>
