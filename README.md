@@ -4,7 +4,6 @@
 
 The Agent-First Development Orchestrator
 
-English | 日本語
 
 </div>
 
